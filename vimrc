@@ -1,0 +1,382 @@
+" Includes some config from captbaritone/dotfiles
+
+" Set script encoding
+scriptencoding utf-8
+
+" Set character encoding used inside VIM
+set encoding=utf-8
+
+" Break compatibility with vi
+set nocompatible
+
+"==============================================================================
+" Use Plug for loading plugins
+"==============================================================================
+source $HOME/.vim/plug.vim
+
+"==============================================================================
+" General options
+"==============================================================================
+set hidden                     " Allow hidden buffers
+set backspace=indent,eol,start " Allow basckspace on indentation
+set showcmd                    " Show commands in status bar
+set wildmenu                   " Command completion
+set wildmode=list:longest      " List all matches and complete till longest
+                               " common substring
+set noshowmode                 " Don't show the mode in the last line of the
+                               " screen, lightline takes care of it
+set showtabline=2              " Always show tab line (for lightline)
+set laststatus=2               " Always show status line (for lightline)
+set ruler                      " Show the line and column number of the cursor
+                               " position separated by a comma
+set lazyredraw                 " Don't update the screen while executing
+                               " macros/commands
+set number                     " Show line numbers
+set nofoldenable               " Disable folding in the beginning
+
+" Buffer area visuals
+set scrolloff=5    " Min number of lines to keep above and below the cursor.
+set visualbell     " Use a visual bell, don't beep!
+set textwidth=79   " Break lines at just under 80 characters
+set colorcolumn=+1 " Highlight the column after `textwidth`
+set numberwidth=4  " Width of the line number column
+
+" Whitespace appearance
+set listchars=tab:▸\ ,trail:• " Highlight tabs and trailing spaces
+set list                      " Make whitespace characters visible
+
+"==============================================================================
+" Character meaning when present in 'formatoptions'
+"==============================================================================
+" c Auto-wrap comments using textwidth, inserting the current comment leader
+"   automatically.
+" q Allow formatting of comments with "gq".
+" r Automatically insert the current comment leader after hitting <Enter> in
+"   Insert mode.
+" t Auto-wrap text using textwidth (does not apply to comments)
+" n Recognize numbered lists
+" 1 Don't break line after one-letter words
+" a Automatically format paragraphs
+set formatoptions=cqrn1
+
+"==============================================================================
+" Colors
+"==============================================================================
+syntax enable
+set background=dark
+colorscheme solarized
+
+"==============================================================================
+" Searching
+"==============================================================================
+set incsearch " Show search results as we type
+set showmatch " Show matching brackets
+set hlsearch  " Highlight search results
+
+" Use regex for searches
+nnoremap / /\v
+vnoremap / /\v
+nnoremap ? ?\v
+vnoremap ? ?\v
+set ignorecase " Ignore case when searching
+set smartcase  " Don't ignore case if there is a capital letter
+
+"==============================================================================
+" Indentation
+"==============================================================================
+set tabstop=4             " Show a tab as four spaces
+set shiftwidth=4          " Reindent is also four spaces
+set softtabstop=4         " When hit <tab> use four columns
+set expandtab             " Create spaces when I type <tab>
+set shiftround            " Round indent to multiple of 'shiftwidth'.
+set autoindent            " Automatically indent on new line
+filetype plugin indent on " Rely on file plugins to handle indenting
+
+let g:python_recommended_style=0 " Don't allow ftplugin to modify tab settings
+
+"==============================================================================
+" Custom filetypes
+"==============================================================================
+
+" TODO: Define bashrc, zshrc etc.
+
+"==============================================================================
+" Custom mappings
+"==============================================================================
+
+" Edit rc files
+nmap <silent> <Leader>ev :vsplit $MYVIMRC<CR>
+nmap <silent> <Leader>ez :vsplit $HOME/.zshrc<CR>
+nmap <silent> <Leader>ep :vsplit $HOME/.vim/plug.vim<CR>
+nmap <silent> <Leader>es :vsplit $HOME/.ssh/config<CR>
+nmap <silent> <Leader>et :vsplit $HOME/.tmux.conf<CR>
+nmap <silent> <Leader>sv :source $MYVIMRC<CR>
+nmap <silent> <Leader>sp :source $HOME/.vim/plug.vim<CR>
+
+" Turn off search highlight
+nnoremap <Leader><Space> :nohlsearch<CR>
+
+" Corrections common quit typos
+command! W w
+command! Q q
+command! WQ wq
+command! Wq wq
+command! Wa wa
+command! Qa qa
+command! WQA wqa
+command! WQa wqa
+
+" Buffer navigation
+nmap <Leader>l :bnext<CR>
+nmap <Leader>h :bprevious<CR>
+" Quit and delete buffer
+nmap <Leader>bq :bp <Bar> bd #<CR>
+" List buffers
+nmap <Leader>bl :ls<CR>
+" Switch to last buffer
+nmap <Leader>bb :b#<CR>
+" List buffers and ask for the one to switch
+nmap <Leader>bg :buffers<CR>:b<Space>
+
+" Window navigation
+noremap <C-j> <C-w><C-j>
+noremap <C-k> <C-w><C-k>
+noremap <C-l> <C-w><C-l>
+noremap <C-h> <C-w><C-h>
+inoremap <C-j> <Esc><C-w><C-j>
+inoremap <C-k> <Esc><C-w><C-k>
+inoremap <C-l> <Esc><C-w><C-l>
+inoremap <C-h> <Esc><C-w><C-h>
+
+" Close preview/scratch windows
+nnoremap <Leader>z <C-w><C-z>
+
+" Paste
+noremap <F2> :set invpaste paste?<CR>
+inoremap <F2> <Esc>:set invpaste paste?<CR>i<CR>
+set pastetoggle=<F2>
+
+" Copy and paste bindings
+if has('clipboard') && !has('gui_running')
+  vnoremap <C-c> "+y
+  vnoremap <C-x> "+d
+  vnoremap <C-v> "+gP
+  nnoremap <C-c> "+y
+  nnoremap <C-x> "+d
+  nnoremap <C-v> "+gP
+endif
+
+" Highlight last inserted text
+nnoremap gV `[v`]
+
+" Reselect visual selection after manual indentation
+vmap > >gv
+vmap < <gv
+
+" Turn off Ex mode
+map Q <NOP>
+
+" Turn off accidental quits
+map ZZ <NOP>
+map ZQ <NOP>
+
+" Use Z to Zelete, deleting without copying
+nnoremap Z "_d
+nmap ZZ Zd
+nmap Q "_x
+
+"==============================================================================
+" Plugin configurations
+"==============================================================================
+
+"------------------------------------------------------------------------------
+" NERDCommenter
+"------------------------------------------------------------------------------
+
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+"------------------------------------------------------------------------------
+" NERDTree
+"------------------------------------------------------------------------------
+
+nmap <Leader>nn :NERDTreeFocus<CR>
+
+"------------------------------------------------------------------------------
+" lightline
+"------------------------------------------------------------------------------
+
+let g:lightline = {
+    \ 'colorscheme': 'solarized',
+    \ 'separator': { 'left': '', 'right': '' },
+    \ 'subseparator': { 'left': '', 'right': '' },
+    \ 'active': {
+    \   'left': [['mode', 'paste'], ['fugitive'], ['filename', 'ctrlpmark']],
+    \   'right': [
+    \     ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok'],
+    \     ['lineinfo'], ['percent'], ['fileformat', 'fileencoding', 'filetype']
+    \   ]
+    \ },
+    \ 'tabline': {'left': [['buffers']], 'right': [['close']]},
+    \ 'component': {
+    \   'lineinfo': ' %3l:%-2v',
+    \ },
+    \ 'component_function': {
+    \   'fugitive': 'LightlineFugitive',
+    \   'filename': 'LightlineFilename',
+    \   'fileformat': 'LightlineFileformat',
+    \   'filetype': 'LightlineFiletype',
+    \   'fileencoding': 'LightlineFileencoding',
+    \   'mode': 'LightlineMode',
+    \   'ctrlpmark': 'CtrlPMark',
+    \ },
+    \ 'component_expand': {
+    \   'linter_checking': 'lightline#ale#checking',
+    \   'linter_warnings': 'lightline#ale#warnings',
+    \   'linter_errors': 'lightline#ale#errors',
+    \   'linter_ok': 'lightline#ale#ok',
+    \   'buffers': 'lightline#bufferline#buffers',
+    \ },
+    \ 'component_type': {
+    \   'linter_checking': 'left',
+    \   'linter_warnings': 'warning',
+    \   'linter_errors': 'error',
+    \   'linter_ok': 'left',
+    \   'buffers': 'tabsel',
+    \ },
+    \ }
+
+function! LightlineModified()
+  return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction
+
+function! LightlineReadonly()
+  return &ft !~? 'help' && &readonly ? ' ' : ''
+endfunction
+
+function! LightlineFilename()
+  let fname = expand('%:t')
+  return fname == 'ControlP' && has_key(g:lightline, 'ctrlp_item') ?
+    \ g:lightline.ctrlp_item :
+    \ fname == '__Tagbar__' ? g:lightline.fname :
+    \ fname =~ '__Gundo\|NERD_tree' ? '' :
+    \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
+    \ &ft == 'unite' ? unite#get_status_string() :
+    \ &ft == 'vimshell' ? vimshell#get_status_string() :
+    \ LightlineReadonly() .
+    \ ('' != fname ? fname : '*')
+endfunction
+
+function! LightlineFugitive()
+  try
+    if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
+      let mark = ' '
+      let branch = fugitive#head()
+      return branch !=# '' ? mark.branch : ''
+    endif
+  catch
+  endtry
+  return ''
+endfunction
+
+function! LightlineFileformat()
+  return winwidth(0) > 70 ? WebDevIconsGetFileFormatSymbol() : ''
+endfunction
+
+function! LightlineFiletype()
+  return winwidth(0) > 70 ? (strlen(&filetype) ? WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
+endfunction
+
+function! LightlineFileencoding()
+  return winwidth(0) > 70 ? (&fenc !=# '' ? &fenc : &enc) : ''
+endfunction
+
+function! LightlineMode()
+  let fname = expand('%:t')
+  return fname == '__Tagbar__' ? 'Tagbar' :
+    \ fname == 'ControlP' ? 'CtrlP' :
+    \ fname == '__Gundo__' ? 'Gundo' :
+    \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
+    \ fname =~ 'NERD_tree' ? 'NERDTree' :
+    \ &ft == 'unite' ? 'Unite' :
+    \ &ft == 'vimfiler' ? 'VimFiler' :
+    \ &ft == 'vimshell' ? 'VimShell' :
+    \ winwidth(0) > 60 ? lightline#mode() : ''
+endfunction
+
+function! CtrlPMark()
+  if expand('%:t') =~ 'ControlP' && has_key(g:lightline, 'ctrlp_item')
+  call lightline#link('iR'[g:lightline.ctrlp_regex])
+  return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
+      \ , g:lightline.ctrlp_next], 0)
+  else
+  return ''
+  endif
+endfunction
+
+let g:ctrlp_status_func = {
+  \ 'main': 'CtrlPStatusFunc_1',
+  \ 'prog': 'CtrlPStatusFunc_2',
+  \ }
+
+function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
+  let g:lightline.ctrlp_regex = a:regex
+  let g:lightline.ctrlp_prev = a:prev
+  let g:lightline.ctrlp_item = a:item
+  let g:lightline.ctrlp_next = a:next
+  return lightline#statusline(0)
+endfunction
+
+function! CtrlPStatusFunc_2(str)
+  return lightline#statusline(0)
+endfunction
+
+let g:tagbar_status_func = 'TagbarStatusFunc'
+
+function! TagbarStatusFunc(current, sort, fname, ...) abort
+  let g:lightline.fname = a:fname
+  return lightline#statusline(0)
+endfunction
+
+let g:unite_force_overwrite_statusline    = 0
+let g:vimfiler_force_overwrite_statusline = 0
+let g:vimshell_force_overwrite_statusline = 0
+
+"------------------------------------------------------------------------------
+" lightline-ale
+"------------------------------------------------------------------------------
+
+let g:lightline#ale#indicator_checking = "\uf110"
+let g:lightline#ale#indicator_warnings = "\uf071"
+let g:lightline#ale#indicator_errors   = "\uf05e"
+let g:lightline#ale#indicator_ok       = "\uf00c"
+
+"------------------------------------------------------------------------------
+" lightline-bufferline
+"------------------------------------------------------------------------------
+
+let g:lightline#bufferline#enable_devicons = 1
+let g:lightline#bufferline#unicode_symbols = 1
+
+"------------------------------------------------------------------------------
+" vim-devicons
+"------------------------------------------------------------------------------
+
+" Fix issue: https://github.com/ryanoasis/vim-devicons/issues/248
+let g:WebDevIconsNerdTreeBeforeGlyphPadding = ""
+let g:WebDevIconsUnicodeDecorateFolderNodes = v:true
+let g:NERDTreeDirArrowExpandable            = "\u00a0"
+let g:NERDTreeDirArrowCollapsible           = "\u00a0"
+highlight! link NERDTreeFlags NERDTreeDir
