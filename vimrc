@@ -33,13 +33,13 @@ set lazyredraw                 " Don't update the screen while executing
                                " macros/commands
 set number                     " Show line numbers
 set nofoldenable               " Disable folding in the beginning
+set completeopt=menu,menuone,preview,noselect,noinsert
 
 " Buffer area visuals
 set scrolloff=5    " Min number of lines to keep above and below the cursor.
 set visualbell     " Use a visual bell, don't beep!
 set textwidth=79   " Break lines at just under 80 characters
 set colorcolumn=+1 " Highlight the column after `textwidth`
-set numberwidth=4  " Width of the line number column
 
 " Whitespace appearance
 set listchars=tab:▸\ ,trail:• " Highlight tabs and trailing spaces
@@ -91,8 +91,6 @@ set expandtab             " Create spaces when I type <tab>
 set shiftround            " Round indent to multiple of 'shiftwidth'.
 set autoindent            " Automatically indent on new line
 filetype plugin indent on " Rely on file plugins to handle indenting
-
-let g:python_recommended_style=0 " Don't allow ftplugin to modify tab settings
 
 "==============================================================================
 " Custom filetypes
@@ -188,6 +186,21 @@ nmap Q "_x
 "==============================================================================
 " Plugin configurations
 "==============================================================================
+
+"------------------------------------------------------------------------------
+" ale
+"------------------------------------------------------------------------------
+
+highlight SignColumn ctermbg=0/4
+highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=0/4
+highlight ALEWarningSign cterm=bold ctermfg=136 ctermbg=0/4
+let g:ale_sign_error   = "\u2622"
+let g:ale_sign_warning = "\u2623"
+let g:ale_open_list = 1
+
+" Only run linters named in ale_linters settings.
+let g:ale_linters_explicit = 1
+let g:ale_completion_enabled = 1
 
 "------------------------------------------------------------------------------
 " NERDCommenter
