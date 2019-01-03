@@ -18,7 +18,6 @@ source $HOME/.vim/plug.vim
 " General options
 "==============================================================================
 set hidden                     " Allow hidden buffers
-set backspace=indent,eol,start " Allow basckspace on indentation
 set showcmd                    " Show commands in status bar
 set wildmenu                   " Command completion
 set wildmode=list:longest      " List all matches and complete till longest
@@ -33,7 +32,10 @@ set lazyredraw                 " Don't update the screen while executing
                                " macros/commands
 set number                     " Show line numbers
 set nofoldenable               " Disable folding in the beginning
-set completeopt=menu,menuone,preview,noselect,noinsert
+set noesckeys                  " Disable recognizing ESC mappings in insert
+                               " mode so that delay in mode change in status
+                               " line is avoided.
+set backspace=indent,eol,start " Allow basckspace on indentation
 
 " Buffer area visuals
 set scrolloff=5    " Min number of lines to keep above and below the cursor.
