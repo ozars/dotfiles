@@ -211,7 +211,34 @@ let g:ale_open_list = 1
 
 " Only run linters named in ale_linters settings.
 let g:ale_linters_explicit = 1
-let g:ale_completion_enabled = 1
+
+" Use YCM for completion instead
+let g:ale_completion_enabled = 0
+
+" Keep the sign gutter open at all times
+let g:ale_sign_column_always = 1
+
+" When to run linters
+let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_insert_leave = 1
+
+" Goto next/previous error
+nmap <silent> <Leader>q <Plug>(ale_previous_wrap)
+nmap <silent> <Leader>w <Plug>(ale_next_wrap)
+
+"------------------------------------------------------------------------------
+" YouCompleteMe
+"------------------------------------------------------------------------------
+
+let g:ycm_python_interpreter_path = 'python3'
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+let g:ycm_disable_for_files_larger_than_kb = 100
+let g:ycm_show_diagnostics_ui = 0
+let g:ycm_enable_diagnostic_signs = 0
+let g:ycm_enable_diagnostic_highlighting = 0
+let g:ycm_echo_current_diagnostic = 0
+let g:ycm_complete_in_comments = 0
+let g:ycm_add_preview_to_completeopt = 1
 
 "------------------------------------------------------------------------------
 " NERDCommenter
