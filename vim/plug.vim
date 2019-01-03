@@ -66,6 +66,16 @@ Plug 'chrisbra/Recover.vim'
 " The ultimate undo history visualizer for VIM
 Plug 'mbbill/undotree'
 
+" Vim-tmux navigation integration
+Plug 'christoomey/vim-tmux-navigator'
+
+" FocusGained and FocusLost autocommand events are not working in terminal vim.
+" This plugin restores them when using vim inside Tmux.
+Plug 'tmux-plugins/vim-tmux-focus-events'
+
+" Seamless integration for vim and tmux's clipboard
+Plug 'roxma/vim-tmux-clipboard'
+
 " Adds file type glyphs/icons to popular Vim plugins: NERDTree, vim-airline,
 " Powerline, Unite, vim-startify and more
 Plug 'ryanoasis/vim-devicons'
