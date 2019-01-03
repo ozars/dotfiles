@@ -6,3 +6,6 @@ export PATH=$HOME/.local/bin:$PATH
 alias cp="cp -i"
 alias rm="rm -i"
 alias mv="mv -i"
+if [[ "$TERM" =~ -256color$ ]]; then
+  alias tmux='COLOR256=1 tmux'
+fi

@@ -32,9 +32,9 @@ set lazyredraw                 " Don't update the screen while executing
                                " macros/commands
 set number                     " Show line numbers
 set nofoldenable               " Disable folding in the beginning
-set noesckeys                  " Disable recognizing ESC mappings in insert
-                               " mode so that delay in mode change in status
-                               " line is avoided.
+set ttimeoutlen=10             " Reduce timeout before mapped key codes
+                               " so that delay in  mode change in status line
+                               " is avoided.
 set backspace=indent,eol,start " Allow basckspace on indentation
 
 " Buffer area visuals
@@ -46,15 +46,6 @@ set colorcolumn=+1 " Highlight the column after `textwidth`
 " Whitespace appearance
 set listchars=tab:▸\ ,trail:• " Highlight tabs and trailing spaces
 set list                      " Make whitespace characters visible
-
-" If term is screen*, set it to xterm*, so that HOME & END keys don't produce
-" letters instead of functioning properly in the insert mode.
-let s:term = expand("$TERM")
-if s:term == 'screen'
-  let &term = 'xterm'
-elseif s:term =~ 'screen-*'
-  let &term = 'xterm-' . s:term[7:]
-endif
 
 "==============================================================================
 " Character meaning when present in 'formatoptions'
