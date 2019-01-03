@@ -5,6 +5,7 @@ ZSH_THEME="agnoster"
 DISABLE_AUTO_UPDATE="true"
 COMPLETION_WAITING_DOTS="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_AUTO_TITLE="true"
 plugins=(
   git
   git-extras
