@@ -1,7 +1,7 @@
 #!/bin/bash
 
 MYFONT="InconsolataGo NF 13"
-DOTFILES="vimrc vim bashrc envrc zshrc oh-my-zsh tmux.conf fonts"
+DOTFILES="vimrc vim bashrc envrc zshrc oh-my-zsh tmux.conf tmux fonts"
 for conf in $DOTFILES
 do
   ln -s -n $@ "dotfiles/$conf" "$HOME/.$conf"
