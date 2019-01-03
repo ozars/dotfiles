@@ -45,6 +45,15 @@ set colorcolumn=+1 " Highlight the column after `textwidth`
 set listchars=tab:▸\ ,trail:• " Highlight tabs and trailing spaces
 set list                      " Make whitespace characters visible
 
+" If term is screen*, set it to xterm*, so that HOME & END keys don't produce
+" letters instead of functioning properly in the insert mode.
+let s:term = expand("$TERM")
+if s:term == 'screen'
+  let &term = 'xterm'
+elseif s:term =~ 'screen-*'
+  let &term = 'xterm-' . s:term[7:]
+endif
+
 "==============================================================================
 " Character meaning when present in 'formatoptions'
 "==============================================================================

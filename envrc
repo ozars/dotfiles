@@ -3,3 +3,7 @@ export EDITOR=vim
 export LANG=en_US.UTF-8
 export DEFAULT_USER=omer
 export PATH=$HOME/.local/bin:$PATH
+
+alias cp="cp -i"
+alias rm="rm -i"
+alias mv="mv -i"
