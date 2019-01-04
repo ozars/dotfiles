@@ -224,6 +224,16 @@ let g:ale_lint_on_insert_leave = 1
 nmap <silent> <Leader>q <Plug>(ale_previous_wrap)
 nmap <silent> <Leader>w <Plug>(ale_next_wrap)
 
+" Temporarily disable white space trimming, since it removes spaces
+" unnecessarily while linting/fixing
+augroup ALEProgress
+    autocmd!
+    autocmd User ALELintPre  call lessspace#TemporaryDisableBegin()
+    autocmd User ALELintPost call lessspace#TemporaryDisableEnd()
+    autocmd User ALEFixPre   call lessspace#TemporaryDisableBegin()
+    autocmd User ALEFixPost  call lessspace#TemporaryDisableEnd()
+augroup END
+
 "------------------------------------------------------------------------------
 " YouCompleteMe
 "------------------------------------------------------------------------------
