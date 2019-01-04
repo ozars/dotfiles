@@ -439,3 +439,26 @@ let g:WebDevIconsUnicodeDecorateFolderNodes = v:true
 let g:NERDTreeDirArrowExpandable            = "\u00a0"
 let g:NERDTreeDirArrowCollapsible           = "\u00a0"
 highlight! link NERDTreeFlags NERDTreeDir
+
+"------------------------------------------------------------------------------
+" undotree
+"------------------------------------------------------------------------------
+
+" Diff in the bottom, undotree on the left
+let g:undotree_WindowLayout = 2
+
+nmap <F4> :UndotreeToggle<CR>
+
+"------------------------------------------------------------------------------
+" vim-easy-align
+"------------------------------------------------------------------------------
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+" Align around assignment operators
+xmap <Leader>a= <Plug>(EasyAlign)<C-X>[+*/-]\?=<CR>
+nmap <Leader>a= <Plug>(EasyAlign)ip<C-X>[+*/-]\?=<CR>
