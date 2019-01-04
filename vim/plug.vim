@@ -34,8 +34,10 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 " Asynchronous linting/fixing for Vim and Language Server Protocol integration
 Plug 'w0rp/ale'
 
-" A code-completion engine for Vim
-Plug 'Valloric/YouCompleteMe'
+if g:my_completion_engine == "ycm"
+    " A code-completion engine for Vim
+    Plug 'Valloric/YouCompleteMe'
+endif
 
 " A light and configurable statusline/tabline plugin for Vim
 Plug 'itchyny/lightline.vim'

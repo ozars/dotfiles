@@ -9,6 +9,9 @@ set encoding=utf-8
 " Break compatibility with vi
 set nocompatible
 
+" Should be ale or ycm
+let g:my_completion_engine = 'ale'
+
 "==============================================================================
 " Use Plug for loading plugins
 "==============================================================================
@@ -204,7 +207,11 @@ let g:ale_open_list = 1
 let g:ale_linters_explicit = 1
 
 " Use YCM for completion instead
-let g:ale_completion_enabled = 0
+if g:my_completion_engine == 'ale'
+  let g:ale_completion_enabled = 1
+else
+  let g:ale_completion_enabled = 0
+endif
 
 " Keep the sign gutter open at all times
 let g:ale_sign_column_always = 1
