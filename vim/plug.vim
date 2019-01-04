@@ -79,7 +79,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 
 " Seamless integration for vim and tmux's clipboard
-Plug 'roxma/vim-tmux-clipboard'
+Plug 'ozars/vim-tmux-clipboard'
 
 " Adds file type glyphs/icons to popular Vim plugins: NERDTree, vim-airline,
 " Powerline, Unite, vim-startify and more
