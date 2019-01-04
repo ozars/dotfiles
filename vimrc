@@ -10,7 +10,7 @@ set encoding=utf-8
 set nocompatible
 
 " Should be ale or ycm
-let g:my_completion_engine = 'ale'
+let g:my_completion_engine = 'ycm'
 
 "==============================================================================
 " Use Plug for loading plugins
