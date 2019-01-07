@@ -81,6 +81,9 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 " Seamless integration for vim and tmux's clipboard
 Plug 'ozars/vim-tmux-clipboard'
 
+" Zoom in/out of windows (toggle between one window and multi-window)
+Plug 'regedarek/ZoomWin'
+
 " Adds file type glyphs/icons to popular Vim plugins: NERDTree, vim-airline,
 " Powerline, Unite, vim-startify and more
 Plug 'ryanoasis/vim-devicons'

@@ -108,11 +108,11 @@ filetype plugin indent on " Rely on file plugins to handle indenting
 "==============================================================================
 
 " Edit rc files
-nmap <silent> <Leader>ev :vsplit $MYVIMRC<CR>
-nmap <silent> <Leader>ez :vsplit $HOME/.zshrc<CR>
-nmap <silent> <Leader>ep :vsplit $HOME/.vim/plug.vim<CR>
-nmap <silent> <Leader>es :vsplit $HOME/.ssh/config<CR>
-nmap <silent> <Leader>et :vsplit $HOME/.tmux.conf<CR>
+nmap <silent> <Leader>ev :split $MYVIMRC<CR>
+nmap <silent> <Leader>ez :split $HOME/.zshrc<CR>
+nmap <silent> <Leader>ep :split $HOME/.vim/plug.vim<CR>
+nmap <silent> <Leader>es :split $HOME/.ssh/config<CR>
+nmap <silent> <Leader>et :split $HOME/.tmux.conf<CR>
 nmap <silent> <Leader>sv :source $MYVIMRC<CR>
 nmap <silent> <Leader>sp :source $HOME/.vim/plug.vim<CR>
 
@@ -142,17 +142,19 @@ nmap <Leader>bb :b#<CR>
 nmap <Leader>bg :buffers<CR>:b<Space>
 
 " Window navigation
-noremap <C-j> <C-w><C-j>
-noremap <C-k> <C-w><C-k>
-noremap <C-l> <C-w><C-l>
-noremap <C-h> <C-w><C-h>
-inoremap <C-j> <Esc><C-w><C-j>
-inoremap <C-k> <Esc><C-w><C-k>
-inoremap <C-l> <Esc><C-w><C-l>
-inoremap <C-h> <Esc><C-w><C-h>
+if !exists("g:loaded_tmux_navigator")
+  noremap <C-j> <C-w><C-j>
+  noremap <C-k> <C-w><C-k>
+  noremap <C-l> <C-w><C-l>
+  noremap <C-h> <C-w><C-h>
+endif
+imap <C-j> <Esc><C-j>
+imap <C-k> <Esc><C-k>
+imap <C-l> <Esc><C-l>
+imap <C-h> <Esc><C-h>
 
 " Close preview/scratch windows
-nnoremap <Leader>z <C-w><C-z>
+nnoremap <Leader>z <C-w>z
 
 " Paste
 noremap <F2> :set invpaste paste?<CR>
