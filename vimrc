@@ -11,6 +11,7 @@ set nocompatible
 
 " Should be ale or ycm
 let g:my_completion_engine = 'ycm'
+let g:my_linting_engine = 'ycm'
 
 "==============================================================================
 " Use Plug for loading plugins
@@ -62,7 +63,8 @@ set list                      " Make whitespace characters visible
 " n Recognize numbered lists
 " 1 Don't break line after one-letter words
 " a Automatically format paragraphs
-set formatoptions=cqrn1
+" j Where it makes sense, remove a comment leader when joining lines.
+set formatoptions=cqrtnj1
 
 "==============================================================================
 " Colors
@@ -83,6 +85,7 @@ nnoremap / /\v
 vnoremap / /\v
 nnoremap ? ?\v
 vnoremap ? ?\v
+nnoremap <F3> :let @/ = @"<CR>
 set ignorecase " Ignore case when searching
 set smartcase  " Don't ignore case if there is a capital letter
 
@@ -101,7 +104,11 @@ filetype plugin indent on " Rely on file plugins to handle indenting
 " Custom filetypes
 "==============================================================================
 
-" TODO: Define bashrc, zshrc etc.
+autocmd BufNewfile,BufRead vimrc set filetype=vim
+autocmd BufNewfile,BufRead zshrc set filetype=zsh
+autocmd BufNewfile,BufRead bashrc set filetype=bash
+autocmd BufNewfile,BufRead envrc set filetype=bash
+autocmd BufNewfile,BufRead tmux.conf set filetype=tmux
 
 "==============================================================================
 " Custom mappings
@@ -198,57 +205,103 @@ nmap Q "_x
 " ale
 "------------------------------------------------------------------------------
 
-highlight SignColumn ctermbg=0/4
-highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=0/4
-highlight ALEWarningSign cterm=bold ctermfg=136 ctermbg=0/4
-let g:ale_sign_error   = "\u2622"
-let g:ale_sign_warning = "\u2623"
-let g:ale_open_list = 1
-
-" Only run linters named in ale_linters settings.
-let g:ale_linters_explicit = 1
-
-" Use YCM for completion instead
-if g:my_completion_engine == 'ale'
-  let g:ale_completion_enabled = 1
+if g:my_completion_engine != 'ale' && g:my_linting_engine != 'ale'
+  let g:ale_enabled = 0
 else
-  let g:ale_completion_enabled = 0
+  if g:my_completion_engine != 'ale'
+    let g:ale_completion_enabled = 0
+  else
+    let g:ale_completion_enabled = 1
+  endif
+
+  if g:my_linting_engine != 'ale'
+    let b:ale_linters = []
+    let g:ale_linters = {}
+  else
+    " Sign column styles
+    highlight SignColumn ctermbg=0/4
+    highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=0/4
+    highlight ALEWarningSign cterm=bold ctermfg=136 ctermbg=0/4
+    let g:ale_sign_error   = "\u2622"
+    let g:ale_sign_warning = "\u2623"
+
+    " Show linting results on a list
+    let g:ale_open_list = 1
+
+    " Only run linters named in ale_linters settings.
+    let g:ale_linters_explicit = 1
+
+    " Keep the sign gutter open at all times
+    let g:ale_sign_column_always = 1
+
+    " When to run linters
+    let g:ale_lint_on_text_changed = 0
+    let g:ale_lint_on_insert_leave = 1
+
+    " Goto next/previous error
+    nmap <silent> <Leader>q <Plug>(ale_previous_wrap)
+    nmap <silent> <Leader>w <Plug>(ale_next_wrap)
+
+    " Temporarily disable white space trimming, since it removes spaces
+    " unnecessarily while linting/fixing
+    if exists("loaded_lessspace_plugin") && g:loaded_lessspace_plugin
+      augroup ALEProgress
+        autocmd!
+        autocmd User ALELintPre  call lessspace#TemporaryDisableBegin()
+        autocmd User ALELintPost call lessspace#TemporaryDisableEnd()
+        autocmd User ALEFixPre   call lessspace#TemporaryDisableBegin()
+        autocmd User ALEFixPost  call lessspace#TemporaryDisableEnd()
+      augroup END
+    else
+      augroup ALEProgress
+        autocmd!
+      augroup END
+    endif
+  endif
 endif
-
-" Keep the sign gutter open at all times
-let g:ale_sign_column_always = 1
-
-" When to run linters
-let g:ale_lint_on_text_changed = 0
-let g:ale_lint_on_insert_leave = 1
-
-" Goto next/previous error
-nmap <silent> <Leader>q <Plug>(ale_previous_wrap)
-nmap <silent> <Leader>w <Plug>(ale_next_wrap)
-
-" Temporarily disable white space trimming, since it removes spaces
-" unnecessarily while linting/fixing
-augroup ALEProgress
-    autocmd!
-    autocmd User ALELintPre  call lessspace#TemporaryDisableBegin()
-    autocmd User ALELintPost call lessspace#TemporaryDisableEnd()
-    autocmd User ALEFixPre   call lessspace#TemporaryDisableBegin()
-    autocmd User ALEFixPost  call lessspace#TemporaryDisableEnd()
-augroup END
 
 "------------------------------------------------------------------------------
 " YouCompleteMe
 "------------------------------------------------------------------------------
 
-let g:ycm_python_interpreter_path = 'python3'
-let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-let g:ycm_disable_for_files_larger_than_kb = 100
-let g:ycm_show_diagnostics_ui = 0
-let g:ycm_enable_diagnostic_signs = 0
-let g:ycm_enable_diagnostic_highlighting = 0
-let g:ycm_echo_current_diagnostic = 0
-let g:ycm_complete_in_comments = 0
-let g:ycm_add_preview_to_completeopt = 1
+if g:my_linting_engine == 'ycm' || g:my_completion_engine == 'ycm'
+    let g:ycm_python_interpreter_path          = 'python3'
+    let g:ycm_global_ycm_extra_conf            = '~/.ycm_extra_conf.py'
+    let g:ycm_disable_for_files_larger_than_kb = 100
+    let g:ycm_confirm_extra_conf               = 0
+
+    if g:my_linting_engine != 'ycm'
+      let g:ycm_show_diagnostics_ui            = 0
+      let g:ycm_enable_diagnostic_signs        = 0
+      let g:ycm_enable_diagnostic_highlighting = 0
+      let g:ycm_echo_current_diagnostic        = 0
+    else
+      highlight SignColumn ctermbg=0/4
+      highlight YcmErrorSign cterm=bold ctermfg=160 ctermbg=0/4
+      highlight YcmWarningSign cterm=bold ctermfg=136 ctermbg=0/4
+      let g:ycm_error_symbol   = "\u2622"
+      let g:ycm_warning_symbol = "\u2623"
+
+      let g:ycm_key_list_select_completion   = ['<Down>']
+      let g:ycm_key_list_previous_completion = ['<Up>']
+
+      let g:ycm_collect_identifiers_from_tags_files = 1
+      let g:ycm_always_populate_location_list       = 1
+      nmap <silent> <Leader>q :lprevious<CR>
+      nmap <silent> <Leader>w :lnext<CR>
+    endif
+
+    if g:my_completion_engine == 'ycm'
+      let g:ycm_complete_in_comments       = 1
+      let g:ycm_add_preview_to_completeopt = 1
+      nnoremap <leader>yy :YcmCompleter GetDoc<cr>
+      nnoremap <leader>jj :YcmCompleter GoTo<cr>
+      nnoremap <leader>jk :YcmCompleter GoToImprecise<cr>
+      nnoremap <leader>jf :YcmCompleter GoToDefinition<cr>
+      nnoremap <leader>jd :YcmCompleter GoToDeclaration<cr>
+      nnoremap <leader>ji :YcmCompleter GoToInclude<cr>
+    endif
+endif
 
 "------------------------------------------------------------------------------
 " NERDCommenter
@@ -304,10 +357,10 @@ let g:lightline = {
     \   'ctrlpmark': 'CtrlPMark',
     \ },
     \ 'component_expand': {
-    \   'linter_checking': 'lightline#ale#checking',
-    \   'linter_warnings': 'lightline#ale#warnings',
-    \   'linter_errors': 'lightline#ale#errors',
-    \   'linter_ok': 'lightline#ale#ok',
+    \   'linter_checking': 'LightlineLinterChecking',
+    \   'linter_warnings': 'LightlineLinterWarnings',
+    \   'linter_errors': 'LightlineLinterErrors',
+    \   'linter_ok': 'LightlineLinterOkay',
     \   'buffers': 'lightline#bufferline#buffers',
     \ },
     \ 'component_type': {
@@ -318,6 +371,46 @@ let g:lightline = {
     \   'buffers': 'tabsel',
     \ },
     \ }
+
+function! LightlineLinterChecking()
+  if g:my_linting_engine == 'ale'
+    return lightline#ale#checking()
+  endif
+  if g:my_linting_engine == 'ycm'
+    return lightline#ycm#checking()
+  endif
+  return ''
+endfunction
+
+function! LightlineLinterWarnings()
+  if g:my_linting_engine == 'ale'
+    return lightline#ale#warnings()
+  endif
+  if g:my_linting_engine == 'ycm'
+    return lightline#ycm#warnings()
+  endif
+  return ''
+endfunction
+
+function! LightlineLinterErrors()
+  if g:my_linting_engine == 'ale'
+      return lightline#ale#errors()
+  endif
+  if g:my_linting_engine == 'ycm'
+    return lightline#ycm#errors()
+  endif
+  return ''
+endfunction
+
+function! LightlineLinterOkay()
+  if g:my_linting_engine == 'ale'
+      return lightline#ale#ok()
+  endif
+  if g:my_linting_engine == 'ycm'
+    return lightline#ycm#ok()
+  endif
+  return ''
+endfunction
 
 function! LightlineModified()
   return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'

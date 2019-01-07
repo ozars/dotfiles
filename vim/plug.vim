@@ -31,22 +31,31 @@ Plug 'scrooloose/nerdtree'
 " A plugin of NERDTree showing git status
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
-" Asynchronous linting/fixing for Vim and Language Server Protocol integration
-Plug 'w0rp/ale'
-
-if g:my_completion_engine == "ycm"
-    " A code-completion engine for Vim
-    Plug 'Valloric/YouCompleteMe'
-endif
-
 " A light and configurable statusline/tabline plugin for Vim
 Plug 'itchyny/lightline.vim'
 
 " Show buffers on lightline (depends lightline)
 Plug 'mengelbrecht/lightline-bufferline'
 
-" ALE indicator for the lightline vim plugin (depends ligtline, ale)
-Plug 'maximbaz/lightline-ale'
+if g:my_completion_engine == "ale" || g:my_linting_engine == "ale"
+  " Asynchronous linting/fixing and Language Server Protocol integration
+  Plug 'w0rp/ale'
+
+  if g:my_linting_engine == "ale"
+    " ALE indicator for the lightline plugin
+    Plug 'maximbaz/lightline-ale'
+  endif
+endif
+
+if g:my_completion_engine == "ycm" || g:my_linting_engine == "ycm"
+  " A code-completion engine for Vim
+  Plug 'Valloric/YouCompleteMe'
+
+  if g:my_linting_engine == "ycm"
+    " YCM indicator for the lightline plugin
+    Plug 'ozars/lightline-ycm'
+  endif
+endif
 
 " Vim plugin that displays tags in a window, ordered by scope
 Plug 'majutsushi/tagbar'
@@ -83,6 +92,9 @@ Plug 'ozars/vim-tmux-clipboard'
 
 " Zoom in/out of windows (toggle between one window and multi-window)
 Plug 'regedarek/ZoomWin'
+
+" Unobtrusive scratch window.
+Plug 'mtth/scratch.vim'
 
 " Adds file type glyphs/icons to popular Vim plugins: NERDTree, vim-airline,
 " Powerline, Unite, vim-startify and more
