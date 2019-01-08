@@ -289,6 +289,7 @@ if g:my_linting_engine == 'ycm' || g:my_completion_engine == 'ycm'
       let g:ycm_always_populate_location_list       = 1
       nmap <silent> <Leader>q :lprevious<CR>
       nmap <silent> <Leader>w :lnext<CR>
+      nmap <silent> <Leader>r :lopen<CR>
     endif
 
     if g:my_completion_engine == 'ycm'
@@ -327,6 +328,7 @@ let g:NERDTrimTrailingWhitespace = 1
 "------------------------------------------------------------------------------
 
 nmap <Leader>nn :NERDTreeFocus<CR>
+nmap <Leader>nm :NERDTreeFind<CR>
 
 "------------------------------------------------------------------------------
 " lightline
@@ -557,3 +559,26 @@ nmap ga <Plug>(EasyAlign)
 " Align around assignment operators
 xmap <Leader>a= <Plug>(EasyAlign)<C-X>[+*/-]\?=<CR>
 nmap <Leader>a= <Plug>(EasyAlign)ip<C-X>[+*/-]\?=<CR>
+
+"------------------------------------------------------------------------------
+" CtrlP
+"------------------------------------------------------------------------------
+
+if exists('g:loaded_ctrlp')
+  let g:ctrlp_extensions = ['line']
+  nmap <c-u> :CtrlPLine<CR>
+endif
+
+"------------------------------------------------------------------------------
+" fzf
+"------------------------------------------------------------------------------
+
+if exists('g:loaded_fzf')
+  nmap <c-p> :FZF<CR>
+  nmap <c-u> :Lines<CR>
+  " When fzf starts in a terminal buffer, hide the statusline of the containing
+  " buffer.
+  autocmd! FileType fzf
+  autocmd  FileType fzf set laststatus=0 noshowmode noruler
+    \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+endif

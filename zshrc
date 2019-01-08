@@ -18,3 +18,5 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 source $ZSH_CUSTOM/agnoster-patch.zsh
 source $HOME/.envrc
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

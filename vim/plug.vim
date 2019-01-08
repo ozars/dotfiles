@@ -11,7 +11,11 @@ Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 Plug 'tpope/vim-fugitive'
 
 " Fuzzy file opener
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
+
+" Things you can do with fzf and vim
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 " The fancy start screen for Vim
 Plug 'mhinz/vim-startify'
@@ -54,6 +58,9 @@ if g:my_completion_engine == "ycm" || g:my_linting_engine == "ycm"
   if g:my_linting_engine == "ycm"
     " YCM indicator for the lightline plugin
     Plug 'ozars/lightline-ycm'
+
+    " Generates config files for YouCompleteMe
+    Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
   endif
 endif
 
