@@ -148,6 +148,11 @@ nmap <Leader>bb :b#<CR>
 " List buffers and ask for the one to switch
 nmap <Leader>bg :buffers<CR>:b<Space>
 
+" Location list navigation
+nmap <silent> <Leader>q :lprevious<CR>
+nmap <silent> <Leader>w :lnext<CR>
+nmap <silent> <Leader>r :lopen<CR>
+
 " Window navigation
 if !exists("g:loaded_tmux_navigator")
   noremap <C-j> <C-w><C-j>
@@ -287,9 +292,6 @@ if g:my_linting_engine == 'ycm' || g:my_completion_engine == 'ycm'
 
       let g:ycm_collect_identifiers_from_tags_files = 1
       let g:ycm_always_populate_location_list       = 1
-      nmap <silent> <Leader>q :lprevious<CR>
-      nmap <silent> <Leader>w :lnext<CR>
-      nmap <silent> <Leader>r :lopen<CR>
     endif
 
     if g:my_completion_engine == 'ycm'
@@ -564,21 +566,29 @@ nmap <Leader>a= <Plug>(EasyAlign)ip<C-X>[+*/-]\?=<CR>
 " CtrlP
 "------------------------------------------------------------------------------
 
-if exists('g:loaded_ctrlp')
-  let g:ctrlp_extensions = ['line']
-  nmap <c-u> :CtrlPLine<CR>
-endif
+" let g:ctrlp_extensions = ['line']
+" nmap <c-u> :CtrlPLine<CR>
 
 "------------------------------------------------------------------------------
 " fzf
 "------------------------------------------------------------------------------
 
-if exists('g:loaded_fzf')
-  nmap <c-p> :FZF<CR>
-  nmap <c-u> :Lines<CR>
-  " When fzf starts in a terminal buffer, hide the statusline of the containing
-  " buffer.
-  autocmd! FileType fzf
-  autocmd  FileType fzf set laststatus=0 noshowmode noruler
-    \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-endif
+nmap <c-p> :FZF<CR>
+nmap <c-u> :Lines<CR>
+" When fzf starts in a terminal buffer, hide the statusline of the containing
+" buffer.
+autocmd! FileType fzf
+autocmd  FileType fzf set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+
+"------------------------------------------------------------------------------
+" tagbar
+"------------------------------------------------------------------------------
+
+nmap <F8> :TagbarToggle<CR>
+
+"------------------------------------------------------------------------------
+" neomake
+"------------------------------------------------------------------------------
+
+nmap <F9> :Neomake<CR>

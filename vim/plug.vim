@@ -64,6 +64,9 @@ if g:my_completion_engine == "ycm" || g:my_linting_engine == "ycm"
   endif
 endif
 
+" Unobtrusive scratch window.
+Plug 'neomake/neomake'
+
 " Vim plugin that displays tags in a window, ordered by scope
 Plug 'majutsushi/tagbar'
 
