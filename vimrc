@@ -24,8 +24,6 @@ source $HOME/.vim/plug.vim
 set hidden                     " Allow hidden buffers
 set showcmd                    " Show commands in status bar
 set wildmenu                   " Command completion
-set wildmode=list:longest      " List all matches and complete till longest
-                               " common substring
 set noshowmode                 " Don't show the mode in the last line of the
                                " screen, lightline takes care of it
 set showtabline=2              " Always show tab line (for lightline)
