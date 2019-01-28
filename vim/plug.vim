@@ -64,9 +64,6 @@ if g:my_completion_engine == "ycm" || g:my_linting_engine == "ycm"
   endif
 endif
 
-" Unobtrusive scratch window.
-Plug 'neomake/neomake'
-
 " Vim plugin that displays tags in a window, ordered by scope
 Plug 'majutsushi/tagbar'
 
@@ -105,6 +102,21 @@ Plug 'regedarek/ZoomWin'
 
 " Unobtrusive scratch window.
 Plug 'mtth/scratch.vim'
+
+" Toggle locationlist/quickfix
+Plug 'Valloric/ListToggle'
+
+" Venu, a menu plugin
+Plug 'ozars/vim-venu'
+
+" Translation files plugin
+Plug 'ozars/po.vim', { 'for': 'po' }
+
+" Misc autoload scripts
+Plug 'xolox/vim-misc', { 'for': 'vim' }
+
+" Reload vim scripts (Depends on vim-misc)
+Plug 'xolox/vim-reload', { 'for': 'vim' }
 
 " Adds file type glyphs/icons to popular Vim plugins: NERDTree, vim-airline,
 " Powerline, Unite, vim-startify and more

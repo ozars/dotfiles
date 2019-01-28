@@ -146,10 +146,28 @@ nmap <Leader>bb :b#<CR>
 " List buffers and ask for the one to switch
 nmap <Leader>bg :buffers<CR>:b<Space>
 
-" Location list navigation
-nmap <silent> <Leader>q :lprevious<CR>
-nmap <silent> <Leader>w :lnext<CR>
-nmap <silent> <Leader>r :lopen<CR>
+" wrap :cnext/:cprevious and :lnext/:lprevious
+function! WrapCommand(direction, prefix)
+    if a:direction == "up"
+        try
+            execute a:prefix . "previous"
+        catch /^Vim\%((\a\+)\)\=:E553/
+            execute a:prefix . "last"
+        catch /^Vim\%((\a\+)\)\=:E\%(776\|42\):/
+        endtry
+    elseif a:direction == "down"
+        try
+            execute a:prefix . "next"
+        catch /^Vim\%((\a\+)\)\=:E553/
+            execute a:prefix . "first"
+        catch /^Vim\%((\a\+)\)\=:E\%(776\|42\):/
+        endtry
+    endif
+endfunction
+nmap <silent> <Leader>q :call WrapCommand("up", "l")<CR>
+nmap <silent> <Leader>w :call WrapCommand("down", "l")<CR>
+let g:lt_location_list_toggle_map = '<leader>r'
+let g:lt_quickfix_list_toggle_map = '<nop>'
 
 " Window navigation
 if !exists("g:loaded_tmux_navigator")
@@ -242,8 +260,8 @@ else
     let g:ale_lint_on_insert_leave = 1
 
     " Goto next/previous error
-    nmap <silent> <Leader>q <Plug>(ale_previous_wrap)
-    nmap <silent> <Leader>w <Plug>(ale_next_wrap)
+    " nmap <silent> <Leader>q <Plug>(ale_previous_wrap)
+    " nmap <silent> <Leader>w <Plug>(ale_next_wrap)
 
     " Temporarily disable white space trimming, since it removes spaces
     " unnecessarily while linting/fixing
@@ -589,4 +607,26 @@ nmap <F8> :TagbarToggle<CR>
 " neomake
 "------------------------------------------------------------------------------
 
-nmap <F9> :Neomake<CR>
+" nmap <F9> :Neomake<CR>
+
+"------------------------------------------------------------------------------
+" Venu
+"------------------------------------------------------------------------------
+
+nnoremap <Leader>p :VenuPrint<CR>
+vnoremap <Leader>p <C-C>:VenuPrint<CR>
+
+function! MyVenuFilter(key, menu)
+  return a:menu.name == 'PO-Editing'
+    \ && venu#native#defaultFilter(a:key, a:menu)
+endfunction
+
+function! ReimportVenu()
+  call venu#clear()
+  call venu#native#import(function('MyVenuFilter'))
+endfunction
+
+augroup VenuReimportBeforePrint
+  autocmd!
+  autocmd User VenuPrint call ReimportVenu()
+augroup END
