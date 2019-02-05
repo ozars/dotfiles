@@ -218,6 +218,20 @@ nnoremap Z "_d
 nmap ZZ Zd
 nmap Q "_x
 
+" Create ALT keys in the format of <ESC>+key
+let c='a'
+while c <= 'z'
+    exec "set <A-".c.">=\e".c
+    exec "imap \e".c." <A-".c.">"
+    let c = nr2char(1+char2nr(c))
+endw
+let c='A'
+while c <= 'Z'
+    exec "set <A-".c.">=\e".c
+    exec "imap \e".c." <A-".c.">"
+    let c = nr2char(1+char2nr(c))
+endw
+
 "==============================================================================
 " Plugin configurations
 "==============================================================================
@@ -590,7 +604,8 @@ nmap <Leader>a= <Plug>(EasyAlign)ip<C-X>[+*/-]\?=<CR>
 "------------------------------------------------------------------------------
 
 nmap <c-p> :FZF<CR>
-nmap <c-u> :Lines<CR>
+nmap <c-u> :Ag<CR>
+nmap <c-g> :Lines<CR>
 " When fzf starts in a terminal buffer, hide the statusline of the containing
 " buffer.
 autocmd! FileType fzf
@@ -630,3 +645,20 @@ augroup VenuReimportBeforePrint
   autocmd!
   autocmd User VenuPrint call ReimportVenu()
 augroup END
+
+"------------------------------------------------------------------------------
+" fugitive
+"------------------------------------------------------------------------------
+
+nnoremap <F9> :Gstatus<CR>
+inoremap <F9> <esc>:Gstatus<CR>
+
+"------------------------------------------------------------------------------
+" gabrielelena/vim-markdown
+"------------------------------------------------------------------------------
+
+" Disable mappings
+let g:markdown_enable_mappings = 0
+
+" Disable spell check
+let g:markdown_enable_spell_checking = 0

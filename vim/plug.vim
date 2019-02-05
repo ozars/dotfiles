@@ -5,7 +5,7 @@ Plug 'altercation/vim-colors-solarized'
 
 " Syntax
 Plug 'tpope/vim-git', { 'for': 'git' }
-Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+Plug 'gabrielelana/vim-markdown', { 'for': 'markdown' }
 
 " A Git wrapper so awesome, it should be illegal
 Plug 'tpope/vim-fugitive'
@@ -117,6 +117,9 @@ Plug 'xolox/vim-misc', { 'for': 'vim' }
 
 " Reload vim scripts (Depends on vim-misc)
 Plug 'xolox/vim-reload', { 'for': 'vim' }
+
+" Plugin to move lines and selections up and down
+Plug 'matze/vim-move'
 
 " Adds file type glyphs/icons to popular Vim plugins: NERDTree, vim-airline,
 " Powerline, Unite, vim-startify and more
