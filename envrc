@@ -6,9 +6,18 @@ if [ -z "$ENV_INITIALIZED" ] || [ "$ENV_INITIALIZED" -eq 0 ]; then
   export ENV_INITIALIZED=1
 fi
 
+fixssh() {
+    eval $(tmux show-env\
+        | sed -n 's/^\(SSH_[^=]*\)=\(.*\)/export \1="\2"/p')
+    tmux show-env | sed -n 's/^\(SSH_[^=]*\)=\(.*\)/export \1="\2"/p'
+}
+
 alias cp="cp -i"
 alias rm="rm -i"
 alias mv="mv -i"
+alias fzfc="ag --nobreak --nonumbers --noheading . | fzf"
+alias ctags-cpp="ctags -R --c++-kinds=+p --fields=+iaS --extras=+q \
+                    --language-force=c++"
 if [[ "$TERM" =~ -256color$ ]]; then
   alias tmux='COLOR256=1 tmux'
 fi
