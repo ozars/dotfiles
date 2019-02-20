@@ -83,7 +83,7 @@ nnoremap / /\v
 vnoremap / /\v
 nnoremap ? ?\v
 vnoremap ? ?\v
-nnoremap <F3> :let @/ = @"<CR>
+nnoremap <F3> :let @/ = '\v' . escape(@", '\\')<CR>
 set ignorecase " Ignore case when searching
 set smartcase  " Don't ignore case if there is a capital letter
 
@@ -104,8 +104,7 @@ filetype plugin indent on " Rely on file plugins to handle indenting
 
 autocmd BufNewfile,BufRead vimrc set filetype=vim
 autocmd BufNewfile,BufRead zshrc set filetype=zsh
-autocmd BufNewfile,BufRead bashrc set filetype=bash
-autocmd BufNewfile,BufRead envrc set filetype=bash
+autocmd BufNewfile,BufRead .envrc,envrc,bashrc set filetype=bash
 autocmd BufNewfile,BufRead tmux.conf set filetype=tmux
 
 "==============================================================================
@@ -217,20 +216,6 @@ map ZQ <NOP>
 nnoremap Z "_d
 nmap ZZ Zd
 nmap Q "_x
-
-" Create ALT keys in the format of <ESC>+key
-let c='a'
-while c <= 'z'
-    exec "set <A-".c.">=\e".c
-    exec "imap \e".c." <A-".c.">"
-    let c = nr2char(1+char2nr(c))
-endw
-let c='A'
-while c <= 'Z'
-    exec "set <A-".c.">=\e".c
-    exec "imap \e".c." <A-".c.">"
-    let c = nr2char(1+char2nr(c))
-endw
 
 "==============================================================================
 " Plugin configurations
@@ -628,23 +613,29 @@ nmap <F8> :TagbarToggle<CR>
 " Venu
 "------------------------------------------------------------------------------
 
-nnoremap <Leader>p :VenuPrint<CR>
-vnoremap <Leader>p <C-C>:VenuPrint<CR>
-
 function! MyVenuFilter(key, menu)
   return a:menu.name == 'PO-Editing'
     \ && venu#native#defaultFilter(a:key, a:menu)
 endfunction
 
-function! ReimportVenu()
-  call venu#clear()
+function! MyStartVenu()
+  try
+    call venu#clear()
+  catch
+    try
+      call venu#unregisterAll()
+      let venu#clear = function('venu#unregisterAll')
+    catch
+      " do nothing
+    endtry
+  endtry
   call venu#native#import(function('MyVenuFilter'))
+  call venu#defaultStartVenuCallback()
 endfunction
 
-augroup VenuReimportBeforePrint
-  autocmd!
-  autocmd User VenuPrint call ReimportVenu()
-augroup END
+let venu_conf = {'StartVenuCallback': function('MyStartVenu')}
+nnoremap <Leader>p :call venu#print(venu_conf)<CR>
+vnoremap <Leader>p <C-C>:call venu#print(venu_conf)<CR>
 
 "------------------------------------------------------------------------------
 " fugitive
