@@ -1,8 +1,10 @@
 #!/bin/bash
 
 MYFONT="InconsolataGo NF 13"
-DOTFILES="vimrc vim bashrc envrc zshrc oh-my-zsh oh-my-zsh-custom tmux.conf tmux fonts"
-for conf in $DOTFILES
+DOTFILES=(
+  vimrc vim bashrc envrc zshrc oh-my-zsh oh-my-zsh-custom tmux.conf tmux fonts gdbinit
+)
+for conf in ${DOTFILES[*]}
 do
   ln -s -n $@ "`realpath --relative-to=""$HOME"" ""$(dirname $0)""/$conf""`" "$HOME/.$conf"
 done
