@@ -2,7 +2,7 @@
 
 MYFONT="InconsolataGo NF 13"
 DOTFILES=(
-  vimrc vim bashrc envrc zshrc oh-my-zsh oh-my-zsh-custom tmux.conf tmux fonts gdbinit
+  vimrc vim bashrc envrc zshrc oh-my-zsh oh-my-zsh-custom tmux.conf tmux fonts gdbinit gdbinit.d
 )
 for conf in ${DOTFILES[*]}
 do
