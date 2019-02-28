@@ -19,7 +19,7 @@ then
     prompt_dir
     prompt_git
     # prompt_bzr
-    # prompt_hg
+    prompt_hg
     prompt_end
   }
 fi
