@@ -83,7 +83,7 @@ nnoremap / /\v
 vnoremap / /\v
 nnoremap ? ?\v
 vnoremap ? ?\v
-nnoremap <F3> :let @/ = '\v' . escape(@", '\\')<CR>
+nnoremap <F3> :let @/ = '\V' . escape(@", '\\')<CR>
 set ignorecase " Ignore case when searching
 set smartcase  " Don't ignore case if there is a capital letter
 
