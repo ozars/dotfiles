@@ -20,6 +20,7 @@ alias ctags-cpp="ctags -R --c++-kinds=+p --fields=+iaS --extras=+q \
                     --language-force=c++"
 alias sumpls="python -c 'import sys; print(sum(map(int, sys.stdin)))'"
 alias avgpls="python -c 'import sys; nums=list(map(float, sys.stdin)); print(sum(nums)/len(nums))'"
+alias gcd='git checkout devel'
 
 if [[ "$TERM" =~ -256color$ ]]; then
   alias tmux='COLOR256=1 tmux'

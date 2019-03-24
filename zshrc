@@ -20,3 +20,8 @@ source $ZSH_CUSTOM/agnoster-patch.zsh
 source $HOME/.envrc
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# fh - repeat history
+fh() {
+  print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
+}
