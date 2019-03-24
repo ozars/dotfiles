@@ -1,3 +1,4 @@
+set history remove-duplicates 1
 define hookpost-up
 dashboard
 end
