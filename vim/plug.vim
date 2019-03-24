@@ -92,7 +92,7 @@ Plug 'christoomey/vim-tmux-navigator'
 
 " FocusGained and FocusLost autocommand events are not working in terminal vim.
 " This plugin restores them when using vim inside Tmux.
-Plug 'tmux-plugins/vim-tmux-focus-events'
+Plug 'ozars/vim-tmux-focus-events'
 
 " Seamless integration for vim and tmux's clipboard
 Plug 'ozars/vim-tmux-clipboard'
@@ -120,6 +120,13 @@ Plug 'xolox/vim-reload', { 'for': 'vim' }
 
 " Plugin to move lines and selections up and down
 Plug 'matze/vim-move'
+
+" Vim plugin for clang-format, a formatter for C, C++, Obj-C, Java, JavaScript,
+" TypeScript and ProtoBuf.
+Plug 'rhysd/vim-clang-format'
+
+" unimpaired.vim: Pairs of handy bracket mappings
+Plug 'tpope/vim-unimpaired'
 
 " Adds file type glyphs/icons to popular Vim plugins: NERDTree, vim-airline,
 " Powerline, Unite, vim-startify and more

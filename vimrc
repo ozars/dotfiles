@@ -42,7 +42,7 @@ set backspace=indent,eol,start " Allow basckspace on indentation
 " Buffer area visuals
 set scrolloff=5    " Min number of lines to keep above and below the cursor.
 set visualbell     " Use a visual bell, don't beep!
-set textwidth=79   " Break lines at just under 80 characters
+set textwidth=80   " Break lines at just under 80 characters
 set colorcolumn=+1 " Highlight the column after `textwidth`
 
 " Whitespace appearance
@@ -175,17 +175,17 @@ if !exists("g:loaded_tmux_navigator")
   noremap <C-l> <C-w><C-l>
   noremap <C-h> <C-w><C-h>
 endif
-imap <C-j> <Esc><C-j>
-imap <C-k> <Esc><C-k>
-imap <C-l> <Esc><C-l>
-imap <C-h> <Esc><C-h>
+imap <C-j> <C-c><C-j>a
+imap <C-k> <C-c><C-k>a
+imap <C-l> <C-c><C-l>a
+imap <C-h> <C-c><C-h>a
 
 " Close preview/scratch windows
 nnoremap <Leader>z <C-w>z
 
 " Paste
 noremap <F2> :set invpaste paste?<CR>
-inoremap <F2> <Esc>:set invpaste paste?<CR>i<CR>
+inoremap <F2> <C-c>:set invpaste paste?<CR>a
 set pastetoggle=<F2>
 
 " Copy and paste bindings
@@ -642,7 +642,7 @@ vnoremap <Leader>p <C-C>:call venu#print(venu_conf)<CR>
 "------------------------------------------------------------------------------
 
 nnoremap <F9> :Gstatus<CR>
-inoremap <F9> <esc>:Gstatus<CR>
+inoremap <F9> <C-c>:Gstatus<CR>
 
 "------------------------------------------------------------------------------
 " gabrielelena/vim-markdown
@@ -653,3 +653,22 @@ let g:markdown_enable_mappings = 0
 
 " Disable spell check
 let g:markdown_enable_spell_checking = 0
+
+"------------------------------------------------------------------------------
+" vim-clang-format
+"------------------------------------------------------------------------------
+
+nmap <F6> :ClangFormat<cr>
+vmap <F6> :ClangFormat<cr>
+
+"------------------------------------------------------------------------------
+" vim-move
+"------------------------------------------------------------------------------
+
+" Do not create default mappings
+let g:move_map_keys = 0
+
+vmap <C-j> <Plug>MoveBlockDown
+vmap <C-k> <Plug>MoveBlockUp
+vmap <C-h> <Plug>MoveBlockLeft
+vmap <C-l> <Plug>MoveBlockRight
