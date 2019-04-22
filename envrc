@@ -12,6 +12,10 @@ fixssh() {
     tmux show-env | sed -n 's/^\(SSH_[^=]*\)=\(.*\)/export \1="\2"/p'
 }
 
+mkcdir () {
+  mkdir -p -- "$1" && cd -P -- "$1"
+}
+
 alias cp="cp -i"
 alias rm="rm -i"
 alias mv="mv -i"
