@@ -2,12 +2,22 @@ if [ "$ZSH_THEME" = "agnoster" ]
 then
   # _prompt_git = prompt_git
   eval "`declare -f prompt_git | sed '1s/.*/_&/'`"
+  # _prompt_hg = prompt_hg
+  eval "`declare -f prompt_hg | sed '1s/.*/_&/'`"
 
   prompt_git()
   {
     if [ -z "$AGNOSTER_SKIP_GIT" ] || [ "$AGNOSTER_SKIP_GIT" -eq "0" ]
     then
       _prompt_git $@
+    fi
+  }
+
+  prompt_hg()
+  {
+    if [ -z "$AGNOSTER_SKIP_HG" ] || [ "$AGNOSTER_SKIP_HG" -eq "0" ]
+    then
+      _prompt_hg $@
     fi
   }
 
