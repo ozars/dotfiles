@@ -18,7 +18,9 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 source $ZSH_CUSTOM/agnoster-patch.zsh
 source $HOME/.envrc
-source $HOME/.local.envrc
+if [ -f "$HOME/.local.envrc" ]; then
+  source $HOME/.local.envrc
+fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
