@@ -128,6 +128,9 @@ Plug 'rhysd/vim-clang-format'
 " unimpaired.vim: Pairs of handy bracket mappings
 Plug 'tpope/vim-unimpaired'
 
+" Text outlining and task management for Vim based on Emacs' Org-Mode
+Plug 'jceb/vim-orgmode'
+
 " Adds file type glyphs/icons to popular Vim plugins: NERDTree, vim-airline,
 " Powerline, Unite, vim-startify and more
 Plug 'ryanoasis/vim-devicons'
