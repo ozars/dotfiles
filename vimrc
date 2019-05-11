@@ -107,6 +107,7 @@ autocmd BufNewfile,BufRead vimrc set filetype=vim
 autocmd BufNewfile,BufRead zshrc set filetype=zsh
 autocmd BufNewfile,BufRead .envrc,envrc,bashrc set filetype=bash
 autocmd BufNewfile,BufRead tmux.conf set filetype=tmux
+autocmd BufNewfile,BufRead *.jsm set filetype=javascript
 
 "==============================================================================
 " Custom mappings

@@ -121,6 +121,9 @@ Plug 'xolox/vim-misc', { 'for': 'vim' }
 " Reload vim scripts (Depends on vim-misc)
 Plug 'xolox/vim-reload', { 'for': 'vim' }
 
+" Web IDL (widl) syntax highlighting for vim
+Plug 'aldafu/vim-widl'
+
 " Plugin to move lines and selections up and down
 Plug 'matze/vim-move'
 
