@@ -48,6 +48,7 @@ set colorcolumn=+1 " Highlight the column after `textwidth`
 " Whitespace appearance
 set listchars=tab:▸\ ,trail:• " Highlight tabs and trailing spaces
 set list                      " Make whitespace characters visible
+set diffopt+=vertical,        " Change diff windows property
 
 "==============================================================================
 " Character meaning when present in 'formatoptions'
@@ -673,3 +674,9 @@ vmap <C-j> <Plug>MoveBlockDown
 vmap <C-k> <Plug>MoveBlockUp
 vmap <C-h> <Plug>MoveBlockLeft
 vmap <C-l> <Plug>MoveBlockRight
+
+"------------------------------------------------------------------------------
+" python-syntax
+"------------------------------------------------------------------------------
+
+let g:python_highlight_all = 1

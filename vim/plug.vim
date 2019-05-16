@@ -70,6 +70,9 @@ Plug 'majutsushi/tagbar'
 " No-BS Python code folding for Vim
 Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
 
+" Python syntax highlighting for Vim
+Plug 'vim-python/python-syntax'
+
 " Remaps . in a way that plugins can tap into it.
 Plug 'tpope/vim-repeat'
 
@@ -130,6 +133,9 @@ Plug 'tpope/vim-unimpaired'
 
 " Text outlining and task management for Vim based on Emacs' Org-Mode
 Plug 'jceb/vim-orgmode'
+
+" Vim configuration for Rust.
+Plug 'rust-lang/rust.vim'
 
 " Adds file type glyphs/icons to popular Vim plugins: NERDTree, vim-airline,
 " Powerline, Unite, vim-startify and more
