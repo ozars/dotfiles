@@ -140,6 +140,9 @@ Plug 'jceb/vim-orgmode'
 " Vim configuration for Rust.
 Plug 'rust-lang/rust.vim'
 
+" A Mercurial wrapper for Vim
+Plug 'ludovicchabant/vim-lawrencium'
+
 " Adds file type glyphs/icons to popular Vim plugins: NERDTree, vim-airline,
 " Powerline, Unite, vim-startify and more
 Plug 'ryanoasis/vim-devicons'

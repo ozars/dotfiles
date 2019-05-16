@@ -220,6 +220,27 @@ nmap ZZ Zd
 nmap Q "_x
 
 "==============================================================================
+" Custom functions/commands
+"==============================================================================
+
+function! s:FormatCode(line1, line2)
+  if &filetype == "rust"
+    try
+      execute a:line1 . "," . a:line2 . "RustFmtRange"
+    catch
+      RustFmt
+    endtry
+  else
+    execute a:line1 . "," . a:line2 . "ClangFormat"
+  endif
+endfunction
+
+command! -range=% FormatCode call s:FormatCode(<line1>, <line2>)
+
+nmap <F6> :FormatCode<cr>
+vmap <F6> :'<,'>FormatCode<cr>
+
+"==============================================================================
 " Plugin configurations
 "==============================================================================
 
@@ -661,8 +682,7 @@ let g:markdown_enable_spell_checking = 0
 " vim-clang-format
 "------------------------------------------------------------------------------
 
-nmap <F6> :ClangFormat<cr>
-vmap <F6> :ClangFormat<cr>
+" Moved to custom FormatCode command above
 
 "------------------------------------------------------------------------------
 " vim-move
@@ -681,3 +701,9 @@ vmap <C-l> <Plug>MoveBlockRight
 "------------------------------------------------------------------------------
 
 let g:python_highlight_all = 1
+
+"------------------------------------------------------------------------------
+" rust.vim
+"------------------------------------------------------------------------------
+
+let g:rustfmt_command = "rustfmt +nightly"
