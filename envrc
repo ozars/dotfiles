@@ -16,6 +16,47 @@ mkcdir () {
   mkdir -p -- "$1" && cd -P -- "$1"
 }
 
+deactivate_in_tmux() {
+  # deactivate = deactivate_real
+  local f="$(declare -f deactivate_real | sed '1s/deactivate_real/deactivate/')"
+  if [ -z $f ]; then
+    return 1;
+  fi
+  eval "$f"
+  deactivate "$@"
+  unset -f deactivate_real
+
+  tmux setenv -u VIRTUAL_ENV
+}
+
+activate() {
+  local src
+
+  if [ -n "$1" ]; then
+    src="$1/bin/activate"
+  else
+    for venv in ".venv" "venv" ".env" "env"; do
+      if [ -f "$venv/bin/activate" ]; then
+        src="$venv/bin/activate"
+        break
+      fi
+    done
+  fi
+  if [ -z "$src" ]; then
+    return 1
+  fi
+
+  source "$src"
+
+  if [[ -n "$TMUX" ]]; then
+    # deactivate_real = deactivate
+    eval "`declare -f deactivate | sed '1s/deactivate/deactivate_real/'`"
+    # deactivate = deactivate_in_tmux
+    eval "`declare -f deactivate_in_tmux | sed '1s/deactivate_in_tmux/deactivate/'`"
+    tmux setenv VIRTUAL_ENV "$VIRTUAL_ENV"
+  fi
+}
+
 alias cp="cp -i"
 alias rm="rm -i"
 alias mv="mv -i"
@@ -25,6 +66,10 @@ alias ctags-cpp="ctags -R --c++-kinds=+p --fields=+iaS --extras=+q \
 alias sumpls="python -c 'import sys; print(sum(map(int, sys.stdin)))'"
 alias avgpls="python -c 'import sys; nums=list(map(float, sys.stdin)); print(sum(nums)/len(nums))'"
 alias gcd='git checkout devel'
+
+if [[ -n "$VIRTUAL_ENV" ]] && [[ -n "$TMUX" ]] && [[ `tmux display -p "#{window_panes}"` -gt 1 ]]; then
+  activate "$VIRTUAL_ENV"
+fi
 
 if [[ "$TERM" =~ -256color$ ]]; then
   alias tmux='COLOR256=1 tmux'
