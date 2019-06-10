@@ -134,6 +134,9 @@ Plug 'matze/vim-move'
 " TypeScript and ProtoBuf.
 Plug 'rhysd/vim-clang-format'
 
+" A formatter for Python files
+Plug 'google/yapf', { 'rtp': 'plugins/vim', 'for': 'python' }
+
 " unimpaired.vim: Pairs of handy bracket mappings
 Plug 'tpope/vim-unimpaired'
 

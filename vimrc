@@ -235,6 +235,8 @@ function! s:FormatCode(line1, line2)
     catch
       RustFmt
     endtry
+  elseif &filetype == "python"
+    execute a:line1 . "," . a:line2 . "YAPF"
   else
     execute a:line1 . "," . a:line2 . "ClangFormat"
   endif
