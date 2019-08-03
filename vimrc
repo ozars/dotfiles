@@ -219,11 +219,16 @@ nnoremap Z "_d
 nmap ZZ Zd
 nmap Q "_x
 
+" "Zoom" a split window into a tab and/or close it
+nmap <Leader><Leader>zo :tabnew %<CR>
+nmap <Leader><Leader>zc :tabclose<CR>
+
 "==============================================================================
 " Custom functions/commands
 "==============================================================================
 
 function! s:FormatCode(line1, line2)
+  exe "normal i\<C-G>u\<Esc>"
   if &filetype == "rust"
     try
       execute a:line1 . "," . a:line2 . "RustFmtRange"
@@ -308,8 +313,14 @@ endif
 "------------------------------------------------------------------------------
 
 if g:my_linting_engine == 'ycm' || g:my_completion_engine == 'ycm'
+
+    " Let clangd fully control code completion
+    let g:ycm_clangd_uses_ycmd_caching = 0
+    " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
+    let g:ycm_clangd_binary_path = exepath("clangd-9")
+
     let g:ycm_python_interpreter_path          = 'python3'
-    let g:ycm_global_ycm_extra_conf            = '~/.ycm_extra_conf.py'
+    let g:ycm_global_ycm_extra_conf            = '~/default_ycm_extra_conf.py'
     let g:ycm_disable_for_files_larger_than_kb = 100
     let g:ycm_confirm_extra_conf               = 0
 
@@ -572,11 +583,18 @@ let g:lightline#bufferline#unicode_symbols = 1
 "------------------------------------------------------------------------------
 
 " Fix issue: https://github.com/ryanoasis/vim-devicons/issues/248
-let g:WebDevIconsNerdTreeBeforeGlyphPadding = ""
-let g:WebDevIconsUnicodeDecorateFolderNodes = v:true
+" let g:WebDevIconsNerdTreeBeforeGlyphPadding = ""
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:webdevicons_conceal_nerdtree_brackets = 1
 let g:NERDTreeDirArrowExpandable            = "\u00a0"
 let g:NERDTreeDirArrowCollapsible           = "\u00a0"
 highlight! link NERDTreeFlags NERDTreeDir
+
+" Fix issue: https://github.com/ryanoasis/vim-devicons/issues/154
+" after a re-source, fix syntax matching issues (concealing brackets):
+if exists('g:loaded_webdevicons')
+    call webdevicons#refresh()
+endif
 
 "------------------------------------------------------------------------------
 " undotree
@@ -682,7 +700,7 @@ let g:markdown_enable_spell_checking = 0
 " vim-clang-format
 "------------------------------------------------------------------------------
 
-" Moved to custom FormatCode command above
+let g:clang_format#command = 'clang-format-9'
 
 "------------------------------------------------------------------------------
 " vim-move
@@ -707,3 +725,11 @@ let g:python_highlight_all = 1
 "------------------------------------------------------------------------------
 
 let g:rustfmt_command = "rustfmt +nightly"
+
+"------------------------------------------------------------------------------
+" Scratch
+"------------------------------------------------------------------------------
+
+nmap <f7> :Scratch<CR>
+vmap <f7> :ScratchSelection<CR>
+vmap <leader><f7> :ScratchSelection!<CR>

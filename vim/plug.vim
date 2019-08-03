@@ -60,12 +60,15 @@ if g:my_completion_engine == "ycm" || g:my_linting_engine == "ycm"
     Plug 'ozars/lightline-ycm'
 
     " Generates config files for YouCompleteMe
-    Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
+    Plug 'ozars/YCM-Generator', { 'branch': 'stable'}
   endif
 endif
 
 " Vim plugin that displays tags in a window, ordered by scope
 Plug 'majutsushi/tagbar'
+
+" Vim syntax highlighting rules for modern CMake
+Plug 'pboettch/vim-cmake-syntax'
 
 " No-BS Python code folding for Vim
 Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
@@ -142,6 +145,15 @@ Plug 'rust-lang/rust.vim'
 
 " A Mercurial wrapper for Vim
 Plug 'ludovicchabant/vim-lawrencium'
+
+" Cython syntax
+Plug 'anntzer/vim-cython'
+
+" Vim motions on speed!
+Plug 'easymotion/vim-easymotion'
+
+" Extra syntax and highlight for nerdtree files
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 " Adds file type glyphs/icons to popular Vim plugins: NERDTree, vim-airline,
 " Powerline, Unite, vim-startify and more
