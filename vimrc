@@ -350,6 +350,7 @@ if g:my_linting_engine == 'ycm' || g:my_completion_engine == 'ycm'
       let g:ycm_add_preview_to_completeopt = 1
       nnoremap <leader>yy :YcmCompleter GetDoc<cr>
       nnoremap <leader>yf :YcmCompleter FixIt<cr>
+      nnoremap <leader>yr :YcmCompleter RefactorRename <c-r><c-w>
       nnoremap <leader>jj :YcmCompleter GoTo<cr>
       nnoremap <leader>jk :YcmCompleter GoToImprecise<cr>
       nnoremap <leader>jf :YcmCompleter GoToDefinition<cr>
