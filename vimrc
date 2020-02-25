@@ -636,6 +636,7 @@ nmap <Leader>a= <Plug>(EasyAlign)ip<C-X>[+*/-]\?=<CR>
 nmap <c-p> :FZF<CR>
 nmap <c-u> :Ag<CR>
 nmap <c-g> :Lines<CR>
+nmap <c-b> :Buffers<CR>
 " When fzf starts in a terminal buffer, hide the statusline of the containing
 " buffer.
 autocmd! FileType fzf
