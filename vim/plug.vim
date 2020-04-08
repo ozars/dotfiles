@@ -158,6 +158,10 @@ Plug 'easymotion/vim-easymotion'
 " Extra syntax and highlight for nerdtree files
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
+" Vim omni-completion support for pug (formerly jade) template engine
+Plug 'digitaltoad/vim-pug', { 'for': ['jade', 'pug'] }
+Plug 'dNitro/vim-pug-complete', { 'for': ['jade', 'pug'] }
+
 " Adds file type glyphs/icons to popular Vim plugins: NERDTree, vim-airline,
 " Powerline, Unite, vim-startify and more
 Plug 'ryanoasis/vim-devicons'
