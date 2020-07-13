@@ -322,7 +322,7 @@ if g:my_linting_engine == 'ycm' || g:my_completion_engine == 'ycm'
     let g:ycm_clangd_binary_path = exepath("clangd-9")
 
     let g:ycm_python_interpreter_path          = 'python3'
-    let g:ycm_global_ycm_extra_conf            = '~/default_ycm_extra_conf.py'
+    let g:ycm_global_ycm_extra_conf            = '~/.ycm_extra_conf.py'
     let g:ycm_disable_for_files_larger_than_kb = 100
     let g:ycm_confirm_extra_conf               = 0
 
