@@ -315,6 +315,7 @@ endif
 "------------------------------------------------------------------------------
 
 if g:my_linting_engine == 'ycm' || g:my_completion_engine == 'ycm'
+    let g:ycm_filetype_blacklist = { 'scala': 1 }
 
     " Let clangd fully control code completion
     let g:ycm_clangd_uses_ycmd_caching = 0

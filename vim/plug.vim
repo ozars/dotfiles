@@ -166,4 +166,7 @@ Plug 'dNitro/vim-pug-complete', { 'for': ['jade', 'pug'] }
 " Powerline, Unite, vim-startify and more
 Plug 'ryanoasis/vim-devicons'
 
+" Use coc for scala
+Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': ['scala']}
+
 call plug#end()
