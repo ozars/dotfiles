@@ -7,7 +7,11 @@ then
 
   prompt_git()
   {
-    if [ -z "$AGNOSTER_SKIP_GIT" ] || [ "$AGNOSTER_SKIP_GIT" -eq "0" ]
+    if [ x"$(git config omz.large-git-repo)" = x"true" ];
+    then
+        return
+    fi
+    if [ ! $not_large ] && [ -z "$AGNOSTER_SKIP_GIT" ] || [ "$AGNOSTER_SKIP_GIT" -eq "0" ]
     then
       _prompt_git $@
     fi
