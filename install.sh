@@ -17,6 +17,14 @@ if [ -z $SKIP_GNOME ] || [ "$SKIP_GNOME" -eq 0 ]; then
     sudo apt-get install -y libglib2.0-bin
   }
 
+  gsettings set org.gnome.desktop.wm.keybindings switch-input-source "['<Super>space']"
+  sudo gsettings set org.gnome.desktop.wm.keybindings switch-input-source "['<Super>space']"
+
+  gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type nothing
+  gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 0
+  sudo gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type nothing
+  sudo gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 0
+
   gprofile_schema="org.gnome.Terminal.Legacy.Profile"
   gprofile_path=`gsettings get org.gnome.Terminal.ProfilesList default`
   gprofile_path="/org/gnome/terminal/legacy/profiles:/:${gprofile_path:1:-1}/"
