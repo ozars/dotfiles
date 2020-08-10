@@ -1,0 +1,7 @@
+{
+    "diagnostic.infoSign": "🛈",
+    "diagnostic.errorSign": "🗲",
+    "diagnostic.hintSign": "☀",
+    "diagnostic.warningSign": "⚠",
+    "python.formatting.provider": "black"
+}

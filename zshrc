@@ -22,6 +22,8 @@ if [ -f "$HOME/.local.envrc" ]; then
   source $HOME/.local.envrc
 fi
 
+fpath=("$ZSH_CUSTOM/functions" "$ZSH_CUSTOM/completions" $fpath)
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # fh - repeat history

@@ -1,5 +1,3 @@
-" Includes some config from captbaritone/dotfiles
-
 " Set script encoding
 scriptencoding utf-8
 
@@ -9,18 +7,16 @@ set encoding=utf-8
 " Break compatibility with vi
 set nocompatible
 
-" Should be ale or ycm
-let g:my_completion_engine = 'ycm'
-let g:my_linting_engine = 'ycm'
-
 "==============================================================================
 " Use Plug for loading plugins
 "==============================================================================
+
 source $HOME/.vim/plug.vim
 
 "==============================================================================
 " General options
 "==============================================================================
+
 set hidden                     " Allow hidden buffers
 set showcmd                    " Show commands in status bar
 set wildmenu                   " Command completion
@@ -63,18 +59,24 @@ set diffopt+=vertical,        " Change diff windows property
 " 1 Don't break line after one-letter words
 " a Automatically format paragraphs
 " j Where it makes sense, remove a comment leader when joining lines.
-set formatoptions=cqrtnj1
+set formatoptions=cqrnj1
 
 "==============================================================================
 " Colors
 "==============================================================================
+
 syntax enable
 set background=dark
+let g:solarized_italic=1
+let g:solarized_bold=1
+let g:solarized_underline=1
 colorscheme solarized
+highlight SignColumn ctermbg=8
 
 "==============================================================================
 " Searching
 "==============================================================================
+
 set incsearch " Show search results as we type
 set showmatch " Show matching brackets
 set hlsearch  " Highlight search results
@@ -91,6 +93,7 @@ set smartcase  " Don't ignore case if there is a capital letter
 "==============================================================================
 " Indentation
 "==============================================================================
+
 set tabstop=4             " Show a tab as four spaces
 set shiftwidth=4          " Reindent is also four spaces
 set softtabstop=4         " When hit <tab> use four columns
@@ -108,6 +111,7 @@ autocmd BufNewfile,BufRead zshrc set filetype=zsh
 autocmd BufNewfile,BufRead .envrc,envrc,bashrc set filetype=bash
 autocmd BufNewfile,BufRead tmux.conf set filetype=tmux
 autocmd BufNewfile,BufRead *.jsm set filetype=javascript
+autocmd BufRead,BufNewFile *.sbt,*.sc set filetype=scala
 
 "==============================================================================
 " Custom mappings
@@ -139,7 +143,7 @@ command! WQa wqa
 nmap <Leader>l :bnext<CR>
 nmap <Leader>h :bprevious<CR>
 " Quit and delete buffer
-nmap <Leader>bq :bp <Bar> bd #<CR>
+nmap <Leader>bq :bp <Bar> bd! #<CR>
 " List buffers
 nmap <Leader>bl :ls<CR>
 " Switch to last buffer
@@ -224,141 +228,132 @@ nmap <Leader><Leader>zo :tabnew %<CR>
 nmap <Leader><Leader>zc :tabclose<CR>
 
 "==============================================================================
-" Custom functions/commands
-"==============================================================================
-
-function! s:FormatCode(line1, line2)
-  exe "normal i\<C-G>u\<Esc>"
-  if &filetype == "rust"
-    try
-      execute a:line1 . "," . a:line2 . "RustFmtRange"
-    catch
-      RustFmt
-    endtry
-  elseif &filetype == "python"
-    execute a:line1 . "," . a:line2 . "YAPF"
-  else
-    execute a:line1 . "," . a:line2 . "ClangFormat"
-  endif
-endfunction
-
-command! -range=% FormatCode call s:FormatCode(<line1>, <line2>)
-
-nmap <F6> :FormatCode<cr>
-vmap <F6> :'<,'>FormatCode<cr>
-
-"==============================================================================
 " Plugin configurations
 "==============================================================================
 
 "------------------------------------------------------------------------------
-" ale
+" coc
 "------------------------------------------------------------------------------
 
-if g:my_completion_engine != 'ale' && g:my_linting_engine != 'ale'
-  let g:ale_enabled = 0
-else
-  if g:my_completion_engine != 'ale'
-    let g:ale_completion_enabled = 0
+let g:coc_global_extensions = [
+\ 'coc-json',
+\ 'coc-tsserver',
+\ 'coc-html',
+\ 'coc-css',
+\ 'coc-yaml',
+\ 'coc-highlight',
+\ 'coc-java',
+\ 'coc-metals',
+\ 'coc-clangd',
+\ 'coc-python',
+\ 'coc-rls'
+\ ]
+
+" You will have a bad experience with diagnostic messages with the default 4000.
+set updatetime=300
+
+" Don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" Always show signcolumns
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" Used in the tab autocompletion for coc
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" To make <cr> select the first completion item and confirm the completion when
+" no item has been selected
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+
+" Close the preview window when completion is done
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use <Leader>K to either doHover or show documentation in preview window
+nnoremap <silent> <Leader>K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
   else
-    let g:ale_completion_enabled = 1
+    call CocAction('doHover')
   endif
+endfunction
 
-  if g:my_linting_engine != 'ale'
-    let b:ale_linters = []
-    let g:ale_linters = {}
-  else
-    " Sign column styles
-    highlight SignColumn ctermbg=0/4
-    highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=0/4
-    highlight ALEWarningSign cterm=bold ctermfg=136 ctermbg=0/4
-    let g:ale_sign_error   = "\u2622"
-    let g:ale_sign_warning = "\u2623"
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
-    " Show linting results on a list
-    let g:ale_open_list = 1
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
 
-    " Only run linters named in ale_linters settings.
-    let g:ale_linters_explicit = 1
+" Remap for do codeAction of current line
+xmap <leader>a  <Plug>(coc-codeaction-line)
+nmap <leader>a  <Plug>(coc-codeaction-line)
 
-    " Keep the sign gutter open at all times
-    let g:ale_sign_column_always = 1
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
 
-    " When to run linters
-    let g:ale_lint_on_text_changed = 0
-    let g:ale_lint_on_insert_leave = 1
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
 
-    " Goto next/previous error
-    " nmap <silent> <Leader>q <Plug>(ale_previous_wrap)
-    " nmap <silent> <Leader>w <Plug>(ale_next_wrap)
+nmap <F6> :Format<cr>
+vmap <F6> <Plug>(coc-format-selected)
 
-    " Temporarily disable white space trimming, since it removes spaces
-    " unnecessarily while linting/fixing
-    if exists("loaded_lessspace_plugin") && g:loaded_lessspace_plugin
-      augroup ALEProgress
-        autocmd!
-        autocmd User ALELintPre  call lessspace#TemporaryDisableBegin()
-        autocmd User ALELintPost call lessspace#TemporaryDisableEnd()
-        autocmd User ALEFixPre   call lessspace#TemporaryDisableBegin()
-        autocmd User ALEFixPost  call lessspace#TemporaryDisableEnd()
-      augroup END
-    else
-      augroup ALEProgress
-        autocmd!
-      augroup END
-    endif
-  endif
-endif
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
-"------------------------------------------------------------------------------
-" YouCompleteMe
-"------------------------------------------------------------------------------
+" Trigger for code actions
+" Make sure `"codeLens.enable": true` is set in your coc config
+nnoremap <leader>cl :<C-u>call CocActionAsync('codeLensAction')<CR>
 
-if g:my_linting_engine == 'ycm' || g:my_completion_engine == 'ycm'
-    let g:ycm_filetype_blacklist = { 'scala': 1 }
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
-    " Let clangd fully control code completion
-    let g:ycm_clangd_uses_ycmd_caching = 0
-    " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
-    let g:ycm_clangd_binary_path = exepath("clangd-9")
-
-    let g:ycm_python_interpreter_path          = 'python3'
-    let g:ycm_global_ycm_extra_conf            = '~/.ycm_extra_conf.py'
-    let g:ycm_disable_for_files_larger_than_kb = 1024
-    let g:ycm_confirm_extra_conf               = 0
-
-    if g:my_linting_engine != 'ycm'
-      let g:ycm_show_diagnostics_ui            = 0
-      let g:ycm_enable_diagnostic_signs        = 0
-      let g:ycm_enable_diagnostic_highlighting = 0
-      let g:ycm_echo_current_diagnostic        = 0
-    else
-      highlight SignColumn ctermbg=0/4
-      highlight YcmErrorSign cterm=bold ctermfg=160 ctermbg=0/4
-      highlight YcmWarningSign cterm=bold ctermfg=136 ctermbg=0/4
-      let g:ycm_error_symbol   = "\u2622"
-      let g:ycm_warning_symbol = "\u2623"
-
-      let g:ycm_key_list_select_completion   = ['<Down>']
-      let g:ycm_key_list_previous_completion = ['<Up>']
-
-      let g:ycm_collect_identifiers_from_tags_files = 1
-      let g:ycm_always_populate_location_list       = 1
-    endif
-
-    if g:my_completion_engine == 'ycm'
-      let g:ycm_complete_in_comments       = 1
-      let g:ycm_add_preview_to_completeopt = 1
-      nnoremap <leader>yy :YcmCompleter GetDoc<cr>
-      nnoremap <leader>yf :YcmCompleter FixIt<cr>
-      nnoremap <leader>yr :YcmCompleter RefactorRename <c-r><c-w>
-      nnoremap <leader>jj :YcmCompleter GoTo<cr>
-      nnoremap <leader>jk :YcmCompleter GoToImprecise<cr>
-      nnoremap <leader>jf :YcmCompleter GoToDefinition<cr>
-      nnoremap <leader>jd :YcmCompleter GoToDeclaration<cr>
-      nnoremap <leader>ji :YcmCompleter GoToInclude<cr>
-    endif
-endif
+" Notify coc.nvim that <enter> has been pressed.
+" Currently used for the formatOnType feature.
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+      \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 "------------------------------------------------------------------------------
 " NERDCommenter
@@ -431,43 +426,20 @@ let g:lightline = {
     \ }
 
 function! LightlineLinterChecking()
-  if g:my_linting_engine == 'ale'
-    return lightline#ale#checking()
-  endif
-  if g:my_linting_engine == 'ycm'
-    return lightline#ycm#checking()
-  endif
   return ''
+  " return lightline#coc#checking()
 endfunction
 
 function! LightlineLinterWarnings()
-  if g:my_linting_engine == 'ale'
-    return lightline#ale#warnings()
-  endif
-  if g:my_linting_engine == 'ycm'
-    return lightline#ycm#warnings()
-  endif
-  return ''
+  return lightline#coc#warnings()
 endfunction
 
 function! LightlineLinterErrors()
-  if g:my_linting_engine == 'ale'
-      return lightline#ale#errors()
-  endif
-  if g:my_linting_engine == 'ycm'
-    return lightline#ycm#errors()
-  endif
-  return ''
+  return lightline#coc#errors()
 endfunction
 
 function! LightlineLinterOkay()
-  if g:my_linting_engine == 'ale'
-      return lightline#ale#ok()
-  endif
-  if g:my_linting_engine == 'ycm'
-    return lightline#ycm#ok()
-  endif
-  return ''
+  return lightline#coc#ok()
 endfunction
 
 function! LightlineModified()
@@ -567,15 +539,6 @@ let g:vimfiler_force_overwrite_statusline = 0
 let g:vimshell_force_overwrite_statusline = 0
 
 "------------------------------------------------------------------------------
-" lightline-ale
-"------------------------------------------------------------------------------
-
-let g:lightline#ale#indicator_checking = "\uf110"
-let g:lightline#ale#indicator_warnings = "\uf071"
-let g:lightline#ale#indicator_errors   = "\uf05e"
-let g:lightline#ale#indicator_ok       = "\uf00c"
-
-"------------------------------------------------------------------------------
 " lightline-bufferline
 "------------------------------------------------------------------------------
 
@@ -610,27 +573,6 @@ let g:undotree_WindowLayout = 2
 nmap <F4> :UndotreeToggle<CR>
 
 "------------------------------------------------------------------------------
-" vim-easy-align
-"------------------------------------------------------------------------------
-
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-
-" Align around assignment operators
-xmap <Leader>a= <Plug>(EasyAlign)<C-X>[+*/-]\?=<CR>
-nmap <Leader>a= <Plug>(EasyAlign)ip<C-X>[+*/-]\?=<CR>
-
-"------------------------------------------------------------------------------
-" CtrlP
-"------------------------------------------------------------------------------
-
-" let g:ctrlp_extensions = ['line']
-" nmap <c-u> :CtrlPLine<CR>
-
-"------------------------------------------------------------------------------
 " fzf
 "------------------------------------------------------------------------------
 
@@ -651,55 +593,11 @@ autocmd  FileType fzf set laststatus=0 noshowmode noruler
 nmap <F8> :TagbarToggle<CR>
 
 "------------------------------------------------------------------------------
-" neomake
-"------------------------------------------------------------------------------
-
-" nmap <F9> :Neomake<CR>
-
-"------------------------------------------------------------------------------
-" Venu
-"------------------------------------------------------------------------------
-
-function! MyVenuFilter(key, menu)
-  return a:menu.name == 'PO-Editing'
-    \ && venu#native#defaultFilter(a:key, a:menu)
-endfunction
-
-function! MyStartVenu()
-  try
-    call venu#clear()
-  catch
-    try
-      call venu#unregisterAll()
-      let venu#clear = function('venu#unregisterAll')
-    catch
-      " do nothing
-    endtry
-  endtry
-  call venu#native#import(function('MyVenuFilter'))
-  call venu#defaultStartVenuCallback()
-endfunction
-
-let venu_conf = {'StartVenuCallback': function('MyStartVenu')}
-nnoremap <Leader>p :call venu#print(venu_conf)<CR>
-vnoremap <Leader>p <C-C>:call venu#print(venu_conf)<CR>
-
-"------------------------------------------------------------------------------
 " fugitive
 "------------------------------------------------------------------------------
 
 nnoremap <F9> :Gstatus<CR>
 inoremap <F9> <C-c>:Gstatus<CR>
-
-"------------------------------------------------------------------------------
-" gabrielelena/vim-markdown
-"------------------------------------------------------------------------------
-
-" Disable mappings
-let g:markdown_enable_mappings = 0
-
-" Disable spell check
-let g:markdown_enable_spell_checking = 0
 
 "------------------------------------------------------------------------------
 " vim-clang-format
@@ -720,12 +618,6 @@ vmap <C-h> <Plug>MoveBlockLeft
 vmap <C-l> <Plug>MoveBlockRight
 
 "------------------------------------------------------------------------------
-" python-syntax
-"------------------------------------------------------------------------------
-
-let g:python_highlight_all = 1
-
-"------------------------------------------------------------------------------
 " rust.vim
 "------------------------------------------------------------------------------
 
@@ -735,6 +627,21 @@ let g:rustfmt_command = "rustfmt +nightly"
 " Scratch
 "------------------------------------------------------------------------------
 
-nmap <f7> :Scratch<CR>
-vmap <f7> :ScratchSelection<CR>
-vmap <leader><f7> :ScratchSelection!<CR>
+nmap <F7> :Scratch<CR>
+vmap <F7> :ScratchSelection<CR>
+vmap <Leader><F7> :ScratchSelection!<CR>
+
+"------------------------------------------------------------------------------
+" gitgutter
+"------------------------------------------------------------------------------
+
+let g:gitgutter_sign_added = '▎'
+let g:gitgutter_sign_modified = '▎'
+let g:gitgutter_sign_removed = '▏'
+let g:gitgutter_sign_removed_first_line = '▔'
+let g:gitgutter_sign_modified_removed = '▋'
+
+highlight GitGutterAdd ctermfg=22 guifg=#006000 ctermbg=NONE guibg=NONE
+highlight GitGutterChange ctermfg=58 guifg=#5F6000 ctermbg=NONE guibg=NONE
+highlight GitGutterDelete ctermfg=52 guifg=#600000 ctermbg=NONE guibg=NONE
+highlight GitGutterChangeDelete ctermfg=52 guifg=#600000 ctermbg=NONE guibg=NONE
