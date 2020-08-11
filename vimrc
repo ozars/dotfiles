@@ -265,6 +265,8 @@ inoremap <silent><expr> <TAB>
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><down> pumvisible() ? "\<C-n>" : "\<down>"
+inoremap <expr><up> pumvisible() ? "\<C-p>": "\<up>"
 
 " Used in the tab autocompletion for coc
 function! s:check_back_space() abort
@@ -281,7 +283,7 @@ inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " To make <cr> select the first completion item and confirm the completion when
 " no item has been selected
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+noremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
 
 " Close the preview window when completion is done
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
@@ -318,7 +320,7 @@ xmap <leader>a  <Plug>(coc-codeaction-line)
 nmap <leader>a  <Plug>(coc-codeaction-line)
 
 " Fix autofix problem of current line
-nmap <leader>qf  <Plug>(coc-fix-current)
+nmap <leader>qf  :CocFix<CR>
 
 " Use `:Format` to format current buffer
 command! -nargs=0 Format :call CocAction('format')
